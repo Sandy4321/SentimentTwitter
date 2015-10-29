@@ -55,23 +55,16 @@ def classify(set_of_words):
     tweets = load_files('/Users/amandaclark/PycharmProjects/SentimentTwitter/Tweets', encoding= 'latin-1',
                         categories=categories, load_content=True)
     count_vect = CountVectorizer()
-
     X_train_count = count_vect.fit_transform(tweets.data)
-
     tfidf_transformer = TfidfTransformer()
-
     X_train_tfidf = tfidf_transformer.fit_transform(X_train_count)
-
     clf = MultinomialNB().fit(X_train_tfidf, tweets.target)
-
     docs_new = set_of_words
-
     X_new_counts = count_vect.transform(docs_new)
-
     X_new_tfidf = tfidf_transformer.transform(X_new_counts)
-
     predicted = clf.predict(X_new_tfidf)
     results = dict()
+    
     for doc, category in zip(docs_new, predicted):
         print('%r => %s' % (doc, tweets.target_names[category]))
         results[doc] = tweets.target_names[category]
